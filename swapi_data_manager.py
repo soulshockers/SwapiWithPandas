@@ -1,12 +1,9 @@
 import logging
 import pandas as pd
 
+from logger_config import logger
 from swapi_client import SWAPIClient
 
-
-# Налаштування логера
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
 
 class SWAPIDataManager:
     def __init__(self, client: SWAPIClient):

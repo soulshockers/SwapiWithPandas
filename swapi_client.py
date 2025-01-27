@@ -1,9 +1,6 @@
 import requests
-import logging
 
-# Налаштування логера
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+from logger_config import logger
 
 
 class SWAPIClient:
