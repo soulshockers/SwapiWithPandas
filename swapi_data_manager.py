@@ -17,6 +17,7 @@ class SWAPIDataManager:
         """
         self.client = client
         self.data = {}
+        self.processors = {}
 
     def fetch_entity(self, endpoint: str):
         """
@@ -25,7 +26,12 @@ class SWAPIDataManager:
         :param endpoint: endpoint для завантаження даних
         """
         raw_data = self.client.fetch_json(endpoint)
-        self.data[endpoint] = pd.DataFrame(raw_data)
+
+        if endpoint in self.processors:
+            self.data[endpoint] = self.processors[endpoint].process(raw_data)
+        else:
+            self.data[endpoint] = pd.DataFrame(raw_data)
+
         logger.info(f"Fetched {len(raw_data)} records for {endpoint}")
 
     def apply_filter(self, endpoint: str, columns_to_drop: list):
@@ -40,6 +46,9 @@ class SWAPIDataManager:
             logger.info(f"Applied filter for {endpoint}, dropped columns: {columns_to_drop}")
         else:
             logger.warning(f"Data for {endpoint} not found.")
+
+    def register_processor(self, entity, processor):
+        self.processors[entity] = processor
 
     def save_to_excel(self, filename: str):
         """

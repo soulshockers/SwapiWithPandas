@@ -1,6 +1,7 @@
 import argparse
 import json
 
+from processors.people_processor import PeopleProcessor
 from swapi_client import SWAPIClient
 from swapi_data_manager import SWAPIDataManager
 
@@ -26,6 +27,8 @@ def main():
     # Завантажуємо та фільтруємо сутності
     endpoints = args.endpoint.split(',')
     filters = json.loads(args.filters)
+
+    manager.register_processor("people", PeopleProcessor())
 
     for endpoint in endpoints:
         manager.fetch_entity(endpoint)
