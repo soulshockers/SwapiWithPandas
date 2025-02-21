@@ -4,11 +4,11 @@ from logger_config import logger
 
 
 class SWAPIClient:
-    def __init__(self, base_url: str):
+    def __init__(self, path: str):
         """
         Ініціалізація з базовою URL-адресою для API.
         """
-        self.base_url = base_url
+        self.path = path
 
     def fetch_json(self, endpoint: str) -> list:
         """
@@ -18,7 +18,7 @@ class SWAPIClient:
         :return: список всіх сутностей у вигляді JSON
         """
         all_data = []
-        url = f"{self.base_url}{endpoint}/"  # Починаємо з першої сторінки
+        url = f"{self.path}{endpoint}/"  # Починаємо з першої сторінки
 
         while url:
             # Логуємо URL запиту

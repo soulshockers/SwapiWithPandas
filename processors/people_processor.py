@@ -10,9 +10,6 @@ class PeopleProcessor(EntityProcessor):
 
         df = pd.DataFrame(json_data)
 
-        # Видалення стовпця "films", якщо він існує
-        df.drop(columns=['films'], errors='ignore', inplace=True)
-
         # Логування завершення процесу
         logger.info("Processing completed for 'people' data")
 

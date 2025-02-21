@@ -1,14 +1,17 @@
 import argparse
 import json
+import os
 
+from clients.excel_swapi_client import ExcelSWAPIClient
 from processors.people_processor import PeopleProcessor
-from swapi_client import SWAPIClient
+from clients.swapi_client import SWAPIClient
 from swapi_data_manager import SWAPIDataManager
 
 
 def main():
     # Ініціалізація парсера аргументів
     parser = argparse.ArgumentParser(description="SWAPI Data Manager")
+    parser.add_argument("--input", required=True, help="Base API URL or path to the Excel file")
     parser.add_argument("--endpoint", type=str,
                         help="Comma-separated list of entities to fetch (e.g. 'people,planets')", required=True)
     parser.add_argument("--output", type=str, help="Output Excel file name", required=True)
@@ -19,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     # Створюємо клієнт для SWAPI
-    client = SWAPIClient(base_url="https://swapi.dev/api/")
+    client = get_client(args.input)
 
     # Створюємо менеджер даних
     manager = SWAPIDataManager(client)
@@ -38,6 +41,13 @@ def main():
     # Зберігаємо дані в Excel
     manager.save_to_excel(args.output)
 
+def get_client(input_source: str):
+    if input_source.startswith("http"):
+        return SWAPIClient(input_source)
+    elif os.path.isfile(input_source) and input_source.endswith(".xlsx"):
+        return ExcelSWAPIClient(input_source)
+    else:
+        raise ValueError("Invalid input source. Provide a valid URL or an .xlsx file path.")
 
 if __name__ == "__main__":
     main()

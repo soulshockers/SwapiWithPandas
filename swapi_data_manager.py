@@ -1,8 +1,8 @@
 import logging
 import pandas as pd
 
+from clients.swapi_client import SWAPIClient
 from logger_config import logger
-from swapi_client import SWAPIClient
 
 
 class SWAPIDataManager:
@@ -55,6 +55,6 @@ class SWAPIDataManager:
         """
         with pd.ExcelWriter(filename) as writer:
             for endpoint, df in self.data.items():
-                df.to_excel(writer, sheet_name=endpoint.capitalize(), index=False)
+                df.to_excel(writer, sheet_name=endpoint, index=False)
                 logger.info(f"Saved {endpoint} data to sheet.")
         logger.info(f"Data successfully saved to {filename}.")
