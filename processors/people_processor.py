@@ -10,8 +10,8 @@ class PeopleProcessor(EntityProcessor):
 
         df = pd.DataFrame(json_data)
 
-        # Перейменування поля "name" на "full_name"
-        df.rename(columns={'name': 'full_name'}, inplace=True)
+        # Видалення стовпця "films", якщо він існує
+        df.drop(columns=['films'], errors='ignore', inplace=True)
 
         # Логування завершення процесу
         logger.info("Processing completed for 'people' data")
